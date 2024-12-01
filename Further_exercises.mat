@@ -1,0 +1,133 @@
+% ===== Further_excersises =====
+% === Horner-elrendez ===
+
+% Definiáljuk a polinomokat
+p = [1 3 -5 8];   % p(x)
+q = [1 0 0 1 0 -9]; % q(x)
+
+conv(q,p)
+
+% Kezdjük a Horner-elrendezés kiírását az első együtthatóval
+horner_str = sprintf('(%dx', p(1));  % Az első együtthatóval és 'x'-szel, zárójelezve
+
+% Ciklussal hozzáadjuk a többi együtthatót
+for i = 2:length(p)
+    if p(i) >= 0
+        horner_str = sprintf('%s + %d)', horner_str, p(i));  % Ha pozitív, hozzáadjuk zárójelbe
+    else
+        horner_str = sprintf('%s + (%d)', horner_str, p(i));  % Ha negatív, akkor is " + (-5)" formátumban
+    end
+    if i < length(p)  % Ha nem az utolsó együttható
+        horner_str = sprintf('%s * x', horner_str);  % Hozzáadjuk a szorzást
+    end
+end
+
+% Kiírjuk a Horner-formát
+fprintf('Horner-elrendezés: %s\n', horner_str);
+
+
+% === === === ===
+
+% Definiáljuk a műveleteket
+r = @(x) polyval(p, x) + polyval(q, x);   % r(x) = p(x) + q(x)
+s = @(x) polyval(p, x) - polyval(q, x);   % s(x) = p(x) - q(x)
+t = @(x) polyval(q, x) / polyval(p, x);   % t(x) = q(x) / p(x)
+
+% A polinom első deriváltjának kiszámítása
+u = polyder(p);   % u(x) = p'(x)
+
+% Műveletek végrehajtása:
+% Számítsuk ki r(x), s(x), t(x), u(x) értékét x = 5-nél
+
+x_value = 5;
+
+r_value = r(x_value);  % r(x) = p(x) + q(x)
+s_value = s(x_value);  % s(x) = p(x) - q(x)
+t_value = t(x_value);  % t(x) = q(x) / p(x)
+u_value = polyval(u, x_value);  % u(x) = p'(x)
+
+% Eredmények kiírása
+fprintf('r(5) = %f\n', r_value);
+fprintf('s(5) = %f\n', s_value);
+fprintf('t(5) = %f\n', t_value);
+fprintf('u(5) = %f\n', u_value);
+
+
+% === === === ===
+
+function [quotient, remainder] = ruffini(p, x)
+    % p: a polinom együtthatói
+    % x: a keresett gyök
+    n = length(p);
+    quotient = zeros(1, n-1);  % Quotient együtthatói
+    remainder = p(1);  % Kezdeti maradék
+    for i = 2:n
+        quotient(i-1) = remainder * x + p(i);
+        remainder = quotient(i-1);
+    end
+    disp("quotient:");
+    disp(quotient);
+    disp("remainder:");
+    disp(remainder);
+end
+
+disp("Ruffini:");
+disp(ruffini(p, 2));
+
+% === === === ===
+
+% Definiáljuk a polinomokat
+p = [1 3 -5 8];   % p(x) = x^3 + 3x^2 - 5x + 8
+q = [1 0 0 1 0 -9]; % q(x) = x^5 + x^2 - 9
+
+% Ellenőrizzük, hogy t(1.5) = 0-e
+x_value = 1.5;
+t_value = polyval(q, x_value) / polyval(p, x_value);   % t(x) = q(x) / p(x)
+
+% Kiírjuk, hogy t(1.5) = 0-e
+fprintf('t(1.5) = %f\n', t_value);
+
+[T1,T2] = deconv(q,p);
+disp('Osztas:');
+disp(T1);
+disp(T2);
+disp('Szorzas:');
+
+% p(x) gyökeinek meghatározása
+p_roots = roots(p);
+fprintf('p(x) gyökei: \n');
+disp(p_roots);
+
+% q(x) gyökeinek meghatározása
+q_roots = roots(q);
+fprintf('q(x) gyökei: \n');
+disp(q_roots);
+
+% === === === ===
+
+disp('roots([1 2]):');
+disp(roots([1 2]));
+
+% === === === ===
+
+pkg load symbolic;
+
+% Definiáljuk a mátrixot
+A = [1 1 -1; 2 -2 0; 1 0 5];
+
+% Szimbólum definíció a karakterisztikus polinomhoz
+syms lambda;
+
+% Karakterisztikus polinom meghatározása
+% char_poly = det(A - lambda * eye(size(A)));
+char_poly = poly(A);
+
+% Eredmény kiíratása
+disp('A karakterisztikus polinom:');
+disp(char_poly);
+
+% === === === ===
+
+disp('A Sajaterteke:');
+disp(eig(A));
+

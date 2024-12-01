@@ -1,0 +1,39 @@
+% === Horner_res_of_division ===
+pkg load symbolic;
+% Polinomok együtthatói
+numerator = [5 -3 0 6]; % Osztando
+denominator = [1 2];    % Oszto
+
+disp('Osztando:');
+disp(numerator);
+disp('Oszto:');
+disp(denominator);
+
+% Polinomosztás
+[quotient, remainder] = deconv(numerator, denominator);
+
+% Az osztás eredménye szimbolikusan
+syms x;
+quotient_poly = poly2sym(quotient, x); % Hányados polinomja
+remainder_poly = poly2sym(remainder, x); % Maradék polinomja
+
+% Teljes eredmény kifejezése
+result = quotient_poly + remainder_poly / poly2sym(denominator, x);
+
+% Eredmények kiírása
+disp('Hányados:');
+disp(quotient_poly);
+disp('Maradék:');
+disp(remainder_poly);
+disp('Teljes osztás eredménye:');
+disp(result);
+
+% x_0 -val...
+
+% x_0 = 2;
+
+% quotient_at_x0 = double(subs(quotient_poly, x, x_0));  % Hányados kiértékelése
+% remainder_at_x0 = double(subs(remainder_poly, x, x_0));  % Maradék kiértékelése
+
+% disp(['Hányados x_0 = ', num2str(x_0), ' pontban: ', num2str(quotient_at_x0)]);
+% disp(['Maradék x_0 = ', num2str(x_0), ' pontban: ', num2str(remainder_at_x0)]);

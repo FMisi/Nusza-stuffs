@@ -1,0 +1,56 @@
+% ===== Szelo modszer =====
+% Függvény definíció
+f = @(x) x^3 + 2*x - 7;
+
+% Kezdőpontok
+x0 = -1;
+x1 = 3;
+
+% Első iteráció
+f_x0 = f(x0);
+f_x1 = f(x1);
+x2 = x1 - (f_x1 * (x1 - x0)) / (f_x1 - f_x0);
+
+% Második iteráció
+f_x2 = f(x2);
+x3 = x2 - (f_x2 * (x2 - x1)) / (f_x2 - f_x1);
+
+% Eredmények
+fprintf('Első iteráció eredménye (Szelo): x2 = %f\n', x2);
+fprintf('Második iteráció eredménye (Szelo): x3 = %f\n', x3);
+
+% ===== Hur modszer =====
+% Definiáljuk a függvényt
+f = @(x) x^3 + 2*x - 7;
+
+% Kezdeti értékek
+x0 = -1;
+x1 = 3;
+
+% Első iteráció
+x2 = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0));
+
+% Második iteráció
+x3 = x2 - f(x2) * (x2 - x1) / (f(x2) - f(x1));
+
+% Eredmények kiírása
+fprintf('Első iteráció (Hur): x2 = %.6f\n', x2);
+fprintf('Második iteráció (Hur): x3 = %.6f\n', x3);
+
+% ===== Newton modszer =====
+% Definiáljuk a függvényt és annak deriváltját
+f = @(x) x^3 + 2*x - 7;
+f_prime = @(x) 3*x^2 + 2;
+
+% Kezdeti érték
+x0 = 1;
+
+% Első iteráció
+x1 = x0 - f(x0) / f_prime(x0);
+
+% Második iteráció
+x2 = x1 - f(x1) / f_prime(x1);
+
+% Eredmények kiírása
+fprintf('Első iteráció (Newt): x1 = %.6f\n', x1);
+fprintf('Második iteráció (Newt): x2 = %.6f\n', x2);

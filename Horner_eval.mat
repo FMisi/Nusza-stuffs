@@ -1,0 +1,21 @@
+% === Horner_eval ===
+% x0 helyen vett helyettesitesi ertek Iteralt Horner-elrendezessel
+
+pkg load symbolic;
+
+% Polinom együtthatói
+polynomial = [1 5 3 -9];  % A polinom együtthatói
+
+% A kívánt x_0 pont
+x_0 = 2;
+
+% Iterált Horner elrendezés alkalmazása
+n = length(polynomial);  % A polinom fokszáma
+result = polynomial(1);   % Kezdőérték a legnagyobb együtthatóval
+
+for i = 2:n
+    result = result * x_0 + polynomial(i);  % Horner elrendezés
+end
+
+% Eredmény kiírása
+disp(['A polinom értéke x_0 = ', num2str(x_0), ' pontban: ', num2str(result)]);

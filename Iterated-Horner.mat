@@ -1,0 +1,39 @@
+% === Iterated_Horner ===
+
+pkg load symbolic;
+
+% Polinom együtthatói
+polynomial = [1 -1 -3 5 -2];  % A polinom együtthatói: x^4 - x^3 - 3x^2 + 5x - 2
+
+% A kívánt x_0 pont
+x_0 = -2;
+
+% Iterált Horner elrendezés alkalmazása
+n = length(polynomial);  % A polinom fokszáma
+result = polynomial(1);   % Kezdőérték a legnagyobb együtthatóval
+
+for i = 2:n
+    result = result * x_0 + polynomial(i);  % Horner elrendezés
+end
+
+% Eredmény kiírása
+disp(['A polinom értéke x_0 = ', num2str(x_0), ' pontban: ', num2str(result)]);
+
+% Ha a polinom értéke 0, akkor x_0 gyök
+if result == 0
+    disp(['x_0 = ', num2str(x_0), ' gyöke a polinomnak.']);
+
+    % Gyök szorosának meghatározása
+    multiplicity = 0;
+    quotient = polynomial;  % Kezdetben a teljes polinom
+    while true
+        [quotient, remainder] = deconv(quotient, [1, 2]);  % Osztás x + 2-tel
+        multiplicity = multiplicity + 1;
+        if all(abs(remainder) < 1e-6)  % Ha a maradék elég kicsi
+            break;
+        end
+    end
+    disp(['A gyök multiplicitása: ', num2str(multiplicity)]);
+else
+    disp(['x_0 = ', num2str(x_0), ' nem gyöke a polinomnak.']);
+end

@@ -1,0 +1,61 @@
+% === Lagrange ===
+
+% Adatok
+% adatsor: (1; 1); (4; 19); (5; 29)
+x = [1, 4, 5]; % x értékek
+y = [1, 19, 29]; % y értékek
+
+% Lagrange-polinom számítása
+n = length(x);
+L = zeros(1, n); % Lagrange-polinom
+
+for k = 1:n
+    % A k-adik Lagrange-alappolinom
+    P = 1;
+    for j = 1:n
+        if j ~= k
+            P = conv(P, poly(x(j))); % Polinom szorzás
+            P = P / (x(k) - x(j));   % Normalizálás
+        end
+    end
+    % L(i, :) = P; % Alappolinom eltárolása
+    L = L + y(k) * P; % Súlyozott alappolinom hozzáadása
+end
+
+disp('Lagrange-polinom együtthatói:');
+disp(L);
+
+% Lagrange-polinom helyettesítési értéke x = 8-ban
+x_value = 8;
+L_value = polyval(L, x_value);
+fprintf('Lagrange-polinom értéke x = 8-ban: %f\n', L_value);
+
+% Elsőfokú közelítő polinom
+p1 = polyfit(x, y, 1); % Lineáris (elsőfokú) illesztés
+disp('Elsőfokú közelítő polinom együtthatói:');
+disp(p1);
+
+% Másodfokú közelítő polinom
+p2 = polyfit(x, y, 2); % Kvadratikus (másodfokú) illesztés
+disp('Másodfokú közelítő polinom együtthatói:');
+disp(p2);
+
+% Lagrange-polinom értéke (már kiszámoltuk korábban)
+fprintf('Lagrange-polinom értéke x = 8-ban: %f\n', L_value);
+
+% Elsőfokú közelítő polinom értéke
+p1_value = polyval(p1, x_value);
+fprintf('Elsőfokú közelítő polinom értéke x = 8-ban: %f\n', p1_value);
+
+% Másodfokú közelítő polinom értéke
+p2_value = polyval(p2, x_value);
+fprintf('Másodfokú közelítő polinom értéke x = 8-ban: %f\n', p2_value);
+
+% Ellenőrizzük, hogy a Lagrange-polinom interpoláció-e
+y_interp = polyval(L, x); % Lagrange-polinom értéke az eredeti pontokban
+is_interpolation = all(abs(y_interp - y) < 1e-6);
+if is_interpolation
+    disp('A Lagrange-polinom interpoláció.');
+else
+    disp('A Lagrange-polinom nem interpoláció.');
+end
